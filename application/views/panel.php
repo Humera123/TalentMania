@@ -1,0 +1,1 @@
+<a href="<?php echo site_url('paneldashboard'); ?>">Link Title</a> 
