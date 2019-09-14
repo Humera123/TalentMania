@@ -31,7 +31,7 @@
                         <span class="text-danger"><?php echo form_error('user_password'); ?></span>
                     </div>
                     <div class="form-group">
-                        <input type="submit" name="login" value="Login" class="btn btn-info" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo base_url(); ?>register">Register</a>
+                        <input type="button" name="login" value="Login" class="btn btn-info" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo base_url(); ?>register">Register</a>
                     </div>
                 </form>
             </div>
@@ -70,7 +70,7 @@ $.ajax({
     data: {name:name, email:email},
 
     success: function(data) {
-
+          //  alert(data);
         if($.isEmptyObject(data.error)){
 
           $(".alert-danger").css('display','none');
@@ -112,7 +112,7 @@ window.onclick = function(event) {
                 <input type="text" name="user_email" class="form-control" value="<?php echo set_value('user_email'); ?>" />
                 <span class="text-danger"><?php echo form_error('user_email'); ?></span>
             </div>
-            <div class="form-group">
+                <div class="form-group">
                 <label>Enter Password</label>
                 <input type="password" name="user_password" class="form-control" value="<?php echo set_value('user_password'); ?>" />
                 <span class="text-danger"><?php echo form_error('user_password'); ?></span>

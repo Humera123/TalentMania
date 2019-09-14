@@ -1,3 +1,4 @@
+
 <a href="<?php echo site_url('welcome'); ?>">Build your Profile</a> 
 <?php if($getApproval['approval'] > 0): ?>
 <a href="<?php echo site_url('skillendorsed'); ?>">Skill Endorsement</a>
@@ -13,3 +14,4 @@
 <?php elseif($getApproval['approval'] == 3):?>
     <img src="<?php echo base_url(); ?>images/bronze_seal.jpg" alt="bronze">
 <?php endif; ?>
+
