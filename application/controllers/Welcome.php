@@ -38,7 +38,7 @@ class Welcome extends CI_Controller {
 	function index()
 	{
 		$this->load->view('templates/header');
-		$this->load->view('skill');
+		$this->load->view('welcome');
 		$this->load->view('templates/footer');
 	}
 

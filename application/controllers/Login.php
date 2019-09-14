@@ -49,7 +49,7 @@ class Login extends CI_Controller {
           $response['error'] = TRUE;
     }
     echo json_encode($response);
-      die();
+
    }
 
     public function logout(){
