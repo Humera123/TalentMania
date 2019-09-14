@@ -89,9 +89,5 @@ class Addjob extends CI_Controller {
 		}
 	}
 
-	function jobseeker_available($jobid){
-		
-
-	}
 
 }
