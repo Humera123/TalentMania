@@ -34,12 +34,15 @@ class Index extends CI_Controller {
  }
 
  function loadFile(){
+   
     $result = $this->index_model->dashboardLoad($this->session->userdata('id')); 
     return $result;
  }
 
  function jobseekerdashboard(){
-    $this->load->view('jobseeker');
+   $data['getApproval'] = $this->index_model->getApproval($this->session->userdata('id'));
+   $this->load->view('jobseeker',$data);
+  
  }
 
  function companydashboard(){
