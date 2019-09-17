@@ -63,14 +63,33 @@ class Welcome extends CI_Controller {
 	function validation()
 	{
 
-		
+		if(isset($_FILES['proimage']))
+		{  
+   			$config['upload_path']   = '/images/';
+	    	$config['allowed_types'] = 'gif|jpg|png|jpeg';
+    		$config['max_size']      = '100000';
+    		$config['max_width']     = '10240';
+    		$config['max_height']    = '7680';
+
+    		$this->load->library('upload', $config);
+
+	    	if ( ! $this->upload->do_upload('proimage'))
+    		{
+	    	    $error = array('error' => $this->upload->display_errors());
+	    	}
+    		else
+    		{
+        		$picture = $this->upload->data($pname);
+ 			
+    		}
+		}
 		$this->form_validation->set_rules('first_name', 'First Name', 'required|alpha_numeric_spaces');
 		$this->form_validation->set_rules('last_name', 'Last Name', 'required|alpha_numeric_spaces');
 		$this->form_validation->set_rules('father_name', 'Father Name', 'required|alpha_numeric_spaces');
 		$this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'required');
 		$this->form_validation->set_rules('nationality', 'Nationality', 'required|alpha_numeric_spaces');
-		$this->form_validation->set_rules('mobileno', 'Mobile no', 'required|numeric');
-		$this->form_validation->set_rules('address', 'Address', 'required|alpha_numeric_spaces');
+		$this->form_validation->set_rules('mobileno', 'Mobile no', 'required|callback_validate_mobileno');
+		$this->form_validation->set_rules('address', 'Address', 'required|callback_validate_address');
 		$this->form_validation->set_rules('city', 'City', 'required|alpha');
 		$this->form_validation->set_rules('country', 'Country', 'required|alpha');
 		$this->form_validation->set_rules('skype_id', 'Skype Id', 'required|alpha_numeric');
@@ -78,10 +97,11 @@ class Welcome extends CI_Controller {
 		/*$this->form_validation->set_rules('cnic_front', 'CNIC front', 'required');
 		$this->form_validation->set_rules('cnic_back', 'CNIC back', 'required');
 		$this->form_validation->set_rules('last_degree', 'Last Degree', 'required');*/
-
+		
 		if($this->form_validation->run())
 		{
 			$data = array(
+				'pimage' => $picture,
 				'first_name'  => $this->input->post('first_name'),
 				'last_name'  => $this->input->post('last_name'),
 				'father_name'  => $this->input->post('father_name'),
@@ -103,7 +123,7 @@ class Welcome extends CI_Controller {
 			
 			$id = $this->session->userdata('id');
 			$result = $this->welcome_model->insert_info($data,$id); 
-			
+
 			if($result == '')
 			{		
 				/*$this->output
@@ -125,7 +145,33 @@ class Welcome extends CI_Controller {
 		}
 	}
 
-	function validation_exp()
+	public function validate_mobileno($str)
+	{
+        if (preg_match("/[\d\s-+]/", $str) !== 0)
+        {            
+        	return true;
+        }
+        else
+        {
+            $this->form_validation->set_message("validate_mobileno", '%s is not valid.');
+            return false;
+        }
+    }
+
+	public function validate_address($str)
+	{
+        if (preg_match("/[\w\s.,-\/]/", $str) !== 0)
+        {            
+        	return true;
+        } 
+        else 
+        {
+            $this->form_validation->set_message("validate_address", '%s is not valid.');
+            return false;
+        }
+    }
+
+	public function validation_exp()
 	{
 
 		$this->form_validation->set_rules('job_title', 'Job Title', 'required|alpha_numeric_spaces');
