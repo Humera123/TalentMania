@@ -3,7 +3,12 @@
 
 
 <div id='jobseeker_dashboard'>
-<?php echo form_open('welcome/validation', array('id' => 'jobseeker_info')) ?>
+<?php echo form_open_multipart('welcome/validation', array('id' => 'jobseeker_info')) ?>
+  
+  <img id="profileimg" name="profileimg" width="200px" height="200px" alt="Profile image">
+  <input type="file" name="proimage" id="pimage" value="Enter your profile image here" onchange="loadimage(event)">
+  <span class="text-danger"><?php echo form_error('profileimg'); ?></span></p>
+
   <p><input placeholder="First name..." type="text" name="first_name" id="first_name" class="form-control" value="<?php echo set_value('first_name'); ?>" />
   <span class="text-danger"><?php echo form_error('first_name'); ?></span></p>
   <p><input placeholder="Last name..." type="text" name="last_name" id="last_name" class="form-control" value="<?php echo set_value('last_name'); ?>" />
@@ -44,3 +49,10 @@
   <?php echo form_close() ?>
 </div>
 
+<script type="text/javascript">
+  function loadimage(event) {
+    var output=document.getElementById('profileimg');
+    output.src=URL.createObjectURL(event.target.files[0]);
+    // body...
+  }
+</script>
