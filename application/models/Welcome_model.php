@@ -36,13 +36,50 @@ class Welcome_model extends CI_Model
 
  function insert_skill($data,$id)
  {
-     
-    print_r($data);
+    
     foreach($data as $d){
      $value=array('skill_name'=>$d,'talentid'=>$id);
      $this->db->insert('jobseeker_skill', $value);
    }
    
+ }
+
+ function getExp($id)
+ {
+    
+    $query = null;
+    $data = array();
+    $data2  = array();
+    $query = $this->db->get_where('jobseeker_exp', array(//making selection
+        'talentid' => $id
+    ));
+    $count = $query->num_rows();
+    if ($count === 0) {
+        return 0;
+    }
+    elseif($count >= 1){
+
+        foreach($query->result() as $row){
+            $data[] = $row->start_month;
+            $data2[]  = $row->end_month;
+        }
+        
+        $min_date = min($data);
+        $max_date = max($data2);
+        $diff = date_diff(date_create($min_date), date_create($max_date));
+        if($diff->format('%y') == 0){
+            $value = array('experience'=>37);
+        }
+        else if($diff->format('%m') == 0){
+            $value = array('experience'=>0);
+        }
+        else{
+            $value = array('experience'=>$diff->format);
+        }
+        $this->db->where('talentid',$id);
+        $this->db->update('jobseeker_info',$value);
+        return 1;
+    }
  }
 
  function verify_email($key)
