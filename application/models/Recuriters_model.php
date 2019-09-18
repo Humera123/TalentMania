@@ -3,12 +3,11 @@ class Recuriters_model extends CI_Model
 {
  function getJob($id)
  {
-    
     $query = null;
-    $this->db->select("*");
-    $this->db->from("newjob_info");
-    $this->db->where('talentid', $id);
-    $this->db->get();
+    $query = $this->db->select("*");
+    $query = $this->db->from("newjob_info");
+    $query = $this->db->where('talentid', $id);
+    $query = $this->db->get();
 
     $count = $query->num_rows();
     if ($count === 0) {

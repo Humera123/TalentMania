@@ -26,6 +26,13 @@
   <span class="text-danger"><?php echo form_error('skype_id'); ?></span></p>
   <p><input placeholder="Linkdin Profile..." type="text" name="linkdin_profile" id="linkdin_profile" class="form-control" value="<?php echo set_value('linkdin_profile'); ?>" />
   <span class="text-danger"><?php echo form_error('linkdin_profile'); ?></span></p>
+  <p>
+    <select name="gender" id="gender" class="form-control" value="<?php echo set_value('gender'); ?>">
+      <option value="1">Female</option>
+      <option value="2">Male</option>
+    </select>
+    <span class="text-danger"><?php echo form_error('gender'); ?></span>
+  </p>
   <p><input type="file" name="cnic_front" id="cnic_front" accept="image/gif, image/jpeg, image/png" value="<?php echo set_value('cnic_front'); ?>">
   <span class="text-danger"><?php echo form_error('cnic_front'); ?></span></p>
   <p><input type="file" name="cnic_back" id="cnic_back" accept="image/gif, image/jpeg, image/png" value="<?php echo set_value('cnic_back'); ?>">

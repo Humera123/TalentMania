@@ -38,7 +38,7 @@ class Welcome extends CI_Controller {
 	function index()
 	{
 		$this->load->view('templates/header');
-		$this->load->view('welcome');
+		$this->load->view('experience');
 		$this->load->view('templates/footer');
 	}
 
@@ -75,6 +75,7 @@ class Welcome extends CI_Controller {
 		$this->form_validation->set_rules('country', 'Country', 'required|alpha');
 		$this->form_validation->set_rules('skype_id', 'Skype Id', 'required|alpha_numeric');
 		$this->form_validation->set_rules('linkdin_profile', 'Linkdin Profile', 'required|alpha_numeric');
+		$this->form_validation->set_rules('gender', 'Gender', 'required');
 		/*$this->form_validation->set_rules('cnic_front', 'CNIC front', 'required');
 		$this->form_validation->set_rules('cnic_back', 'CNIC back', 'required');
 		$this->form_validation->set_rules('last_degree', 'Last Degree', 'required');*/
@@ -93,6 +94,7 @@ class Welcome extends CI_Controller {
 				'country'  => $this->input->post('country'),
 				'skype_id'  => $this->input->post('skype_id'),
 				'linkdin_profile'  => $this->input->post('linkdin_profile'),
+				'gender'  => $this->input->post('gender'),
 				/*'cnic_front'  => $this->input->post('cnic_front'),
 				'cnic_back'  => $this->input->post('cnic_back'),
 				'last_degree'  => $this->input->post('last_degree'),*/
@@ -213,10 +215,6 @@ class Welcome extends CI_Controller {
 				'talentid' => $this->session->userdata('id')
 				
 			);
-
-
-			
-
 			
 			$id = $this->session->userdata('id');
 			$result = $this->welcome_model->insert_edu($data); 
@@ -250,8 +248,6 @@ class Welcome extends CI_Controller {
  			$data[] = $this->input->post('skill'.$i);
 		}
 		
-
-			
 			$id = $this->session->userdata('id');
 			$result = $this->welcome_model->insert_skill($data,$id); 
 			
@@ -270,6 +266,20 @@ class Welcome extends CI_Controller {
 	
 	}
 
+
+	function totalexperience(){
+		$id = $this->session->userdata('id');
+		$result = $this->welcome_model->getExp($id);
+		if($result == 0){
+			$this->output
+				->set_content_type('application/json')
+				->set_output(json_encode(['message'=>"", 'status'=>'Fresh Graduate']));
+		}
+		elseif($result == 1){
+			$this->education();
+		}
+
+	}
 
 	function logout()
 	{
