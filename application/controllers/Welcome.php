@@ -31,6 +31,7 @@ class Welcome extends CI_Controller {
 			redirect('login');
 		}
 		$this->load->library('form_validation');
+		$this->load->helper(array('form', 'url'));
 		$this->load->library('encryptioncustom');
 		$this->load->model('welcome_model');
 	}
@@ -38,7 +39,16 @@ class Welcome extends CI_Controller {
 	function index()
 	{
 		$this->load->view('templates/header');
-		$this->load->view('welcome');
+		if($this->session->userdata('id'))
+		{
+			$id=$this->session->userdata('id');
+			$this->welcome_model->retrieve_info($id);
+		}
+		else 
+		{
+			$this->load->view('welcome');
+		}
+		
 		$this->load->view('templates/footer');
 	}
 
@@ -62,27 +72,7 @@ class Welcome extends CI_Controller {
 
 	function validation()
 	{
-
-		if(isset($_FILES['proimage']))
-		{  
-   			$config['upload_path']   = '/images/';
-	    	$config['allowed_types'] = 'gif|jpg|png|jpeg';
-    		$config['max_size']      = '100000';
-    		$config['max_width']     = '10240';
-    		$config['max_height']    = '7680';
-
-    		$this->load->library('upload', $config);
-
-	    	if ( ! $this->upload->do_upload('proimage'))
-    		{
-	    	    $error = array('error' => $this->upload->display_errors());
-	    	}
-    		else
-    		{
-        		$picture = $this->upload->data($pname);
- 			
-    		}
-		}
+//		$response = array();
 		$this->form_validation->set_rules('first_name', 'First Name', 'required|alpha_numeric_spaces');
 		$this->form_validation->set_rules('last_name', 'Last Name', 'required|alpha_numeric_spaces');
 		$this->form_validation->set_rules('father_name', 'Father Name', 'required|alpha_numeric_spaces');
@@ -97,11 +87,14 @@ class Welcome extends CI_Controller {
 		/*$this->form_validation->set_rules('cnic_front', 'CNIC front', 'required');
 		$this->form_validation->set_rules('cnic_back', 'CNIC back', 'required');
 		$this->form_validation->set_rules('last_degree', 'Last Degree', 'required');*/
+		$picture=$this-> upload_file('proimage');
+		
 		
 		if($this->form_validation->run())
 		{
+			
 			$data = array(
-				'pimage' => $picture,
+				'pimage' => $picture['upload_data']['file_name'],
 				'first_name'  => $this->input->post('first_name'),
 				'last_name'  => $this->input->post('last_name'),
 				'father_name'  => $this->input->post('father_name'),
@@ -119,12 +112,12 @@ class Welcome extends CI_Controller {
 				'talentid' => $this->session->userdata('id')
 				
 			);
-
-			
+						
 			$id = $this->session->userdata('id');
-			$result = $this->welcome_model->insert_info($data,$id); 
 
-			if($result == '')
+			$result = $this->welcome_model->insert_info($data,$id); 
+			
+			if($result =='')
 			{		
 				/*$this->output
 				->set_content_type('application/json')
@@ -145,6 +138,37 @@ class Welcome extends CI_Controller {
 		}
 	}
 
+	 public function upload_file($image)
+        {
+
+        	if(isset($_FILES[$image]["name"]))  
+        	{
+                $config['upload_path']          = './uploads/';
+                $config['allowed_types']        = 'gif|jpg|png|pdf|doc';
+                $config['max_size']             = 102400;
+                $config['max_width']            = 1024;
+                $config['max_height']           = 768;
+                $this->load->library('upload', $config);
+                if ( ! $this->upload->do_upload($image))
+                {
+                    $error = array('error' => $this->upload->display_errors());
+                    print_r($error);
+                    exit;
+                    
+                }
+                else
+                {
+                    $data = array('upload_data' => $this->upload->data());
+                    return $data;
+                }
+            }
+            else
+            {
+            	echo "File is not select";
+            	exit;
+            }
+        }
+	
 	public function validate_mobileno($str)
 	{
         if (preg_match("/[\d\s-+]/", $str) !== 0)

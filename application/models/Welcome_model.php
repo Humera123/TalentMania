@@ -11,11 +11,10 @@ class Welcome_model extends CI_Model
     $count = $query->num_rows();
     if ($count === 0) {
         $this->db->insert('jobseeker_info', $data);
-        return $this->db->insert_id();
     }
     elseif($count === 1){
 
-        $value=array('first_name'=>$data['first_name'],'last_name'=>$data['last_name'],'father_name'=>$data['father_name'],'date_of_birth'=>$data['date_of_birth'],
+        $value=array('pimage'=>$data['pimage'],'first_name'=>$data['first_name'],'last_name'=>$data['last_name'],'father_name'=>$data['father_name'],'date_of_birth'=>$data['date_of_birth'],
         'nationality'=>$data['nationality'],'mobileno'=>$data['mobileno'],'city'=>$data['city'],'country'=>$data['country'],
         'address'=>$data['address'],'skype_id'=>$data['skype_id'],'linkdin_profile'=>$data['linkdin_profile']);
         
@@ -48,23 +47,37 @@ class Welcome_model extends CI_Model
 
  function verify_email($key)
  {
-  $this->db->where('verification_key', $key);
-  $this->db->where('is_email_verified', 'no');
-  $query = $this->db->get('jobseeker_user');
-  if($query->num_rows() > 0)
-  {
-   $data = array(
-    'is_email_verified'  => 'yes'
-   );
-   $this->db->where('verification_key', $key);
-   $this->db->update('jobseeker_user', $data);
-   return true;
+    $this->db->where('verification_key', $key);
+    $this->db->where('is_email_verified', 'no');
+    $query = $this->db->get('jobseeker_user');
+    if($query->num_rows() > 0)
+    {
+      $data = array(
+      'is_email_verified'  => 'yes'
+        );
+     $this->db->where('verification_key', $key);
+    $this->db->update('jobseeker_user', $data);
+    return true;
+    }
+    else
+    {
+    return false;
+    }
   }
-  else
+
+  function retrieve_info($id)
   {
-   return false;
+    $sql  = 'SELECT pimage,first_name,last_name,father_name,date_of_birth,nationality,mobileno,city,country,address,
+          skype_id,linkdin_profile';
+    $sql .= ' FROM jobseeker_info WHERE talentid = ?';
+    $sql_params = array($id);
+    $query = $this->db->query($sql, $sql_params);
+    $form = $query->row_array();
+
+    $data = array('title' => 'Edit Page', 'form' => $form);
+    $this->load->view('welcome', $data);
+  
   }
- }
 }
 
 ?>
