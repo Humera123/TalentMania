@@ -39,7 +39,6 @@ class Welcome extends CI_Controller {
 	function index()
 	{
 		$this->load->view('templates/header');
-<<<<<<< HEAD
 		if($this->session->userdata('id'))
 		{
 			$id=$this->session->userdata('id');
@@ -49,22 +48,27 @@ class Welcome extends CI_Controller {
 		{
 			$this->load->view('welcome');
 		}
-		
-=======
-		$this->load->view('experience');
->>>>>>> 1dc622d0288140b6b5e4d53f6afc83cd3226417b
 		$this->load->view('templates/footer');
 	}
 
-	function experience(){
-		
-		$this->load->view('experience');
+	function experience()
+	{
+		$id=$this->session->userdata('id');
+		$result['data']=$this->welcome_model->retrieve_exp($id);
+		$result['exp']=null;
+		$this->form_validation->unset_field_data();
+		$this->load->view('experience',$result); 
 		
 	}
 
-	function education(){
+	function education()
+	{
 		
-		$this->load->view('education');
+		$id=$this->session->userdata('id');
+		$result['data']=$this->welcome_model->retrieve_edu($id);
+		$result['exp']=null;
+		$this->form_validation->unset_field_data();
+		$this->load->view('experience',$result); 
 		
 	}
 
@@ -128,8 +132,7 @@ class Welcome extends CI_Controller {
 				/*$this->output
 				->set_content_type('application/json')
 				->set_output(json_encode(['status'=>'success'])); */
-				$this->experience();
-				
+					$this->experience();
 			}
 			else
 			{
@@ -143,7 +146,7 @@ class Welcome extends CI_Controller {
 			$this->index();
 		}
 	}
-
+	
 	 public function upload_file($image)
         {
 
@@ -211,31 +214,36 @@ class Welcome extends CI_Controller {
 		$this->form_validation->set_rules('end_month', 'End of month', 'required');
 		$this->form_validation->set_rules('current_job', 'Current Job');
 		
+		
 
 		if($this->form_validation->run())
 		{
+			$checked=$this->input->post('current_job');
+			if(!isset($checked))
+			{
+					$val=0;
+			}
+			else 
+			{	
+				$val=1;
+			}
 			$data = array(
 				'job_title'  => $this->input->post('job_title'),
 				'company_name'  => $this->input->post('company'),
 				'location'  => $this->input->post('location'),
 				'start_month'  => $this->input->post('start_month'),
 				'end_month'  => $this->input->post('end_month'),
-				'curent_job'  => $this->input->post('current_job'),
+				'curent_job'  => $val,
 				'talentid' => $this->session->userdata('id')
-				
 			);
 
-			
-			$id = $this->session->userdata('id');
-			$result = $this->welcome_model->insert_exp($data); 
+			$id=$this->input->post('job_title');
+			$result = $this->welcome_model->insert_exp($data,$id); 
 			
 			if($result == '')
-			{		
-				/*$this->output
-				->set_content_type('application/json')
-				->set_output(json_encode(['status'=>'success'])); */
-				$this->education();
-				
+			{
+				$this->experience();
+
 			}
 			else
 			{
@@ -252,8 +260,6 @@ class Welcome extends CI_Controller {
 
 	function validation_edu()
 	{
-
-		
 		$this->form_validation->set_rules('school', 'School', 'required|alpha_numeric_spaces');
 		$this->form_validation->set_rules('degree_name', 'Degree/Certificate', 'required|alpha_numeric_spaces');
 		$this->form_validation->set_rules('field_of_study', 'Field of study', 'required|alpha_numeric_spaces');
@@ -262,22 +268,17 @@ class Welcome extends CI_Controller {
 		$this->form_validation->set_rules('end_month_edu', 'End of month', 'required');
 		$this->form_validation->set_rules('current_degree', 'Current Job');
 		
-		/*$data = array(
-			'school'  => $this->input->post('school'),
-			'degree_name'  => $this->input->post('degree_name'),
-			'field_of_study'  => $this->input->post('field_of_study'),
-			'location'  => $this->input->post('location'),
-			'start_month'  => $this->input->post('start_month_edu'),
-			'end_month'  => $this->input->post('end_month_edu'),
-			'current_degree'  => $this->input->post('current_degree'),
-			'talentid' => $this->session->userdata('id')
-			
-		);
-
-		print_r($data);
-		exit;*/
 		if($this->form_validation->run())
 		{
+			$checked=$this->input->post('current_degree');
+			if(!isset($checked))
+			{
+					$val=0;
+			}
+			else 
+			{	
+				$val=1;
+			}
 			$data = array(
 				'school'  => $this->input->post('school'),
 				'degree_name'  => $this->input->post('degree_name'),
@@ -285,7 +286,7 @@ class Welcome extends CI_Controller {
 				'location'  => $this->input->post('location'),
 				'start_date'  => $this->input->post('start_month_edu'),
 				'end_date'  => $this->input->post('end_month_edu'),
-				'current_degree'  => $this->input->post('current_degree'),
+				'current_degree'  => $val,
 				'talentid' => $this->session->userdata('id')
 				
 			);
@@ -296,7 +297,7 @@ class Welcome extends CI_Controller {
 			if($result == '')
 			{		
 				
-				$this->skill();
+				$this->education();
 				
 			}
 			else
@@ -314,8 +315,6 @@ class Welcome extends CI_Controller {
 
 	function validation_skill()
 	{
-
-		
 		$tskill = $this->input->post('tskill');
 		$data = array();
 		for($i = 1; $i <= $tskill; $i++){
@@ -353,6 +352,97 @@ class Welcome extends CI_Controller {
 			$this->education();
 		}
 
+	}
+
+	public function delete_exp_data()
+	{
+		$eid = $this->uri->segment(3);
+		$id = $this->session->userdata('id');
+		$this->welcome_model->delete_exp($eid);
+		$this->experience();
+		
+	}
+
+	function edit_exp_data()
+	{
+		$eid = $this->uri->segment(3);
+		$id = $this->session->userdata('id');
+		$result['exp']=$this->welcome_model->retreive_one_experience($eid);
+			$result['data']=$this->welcome_model->retrieve_exp($id);
+				
+		$this->form_validation->unset_field_data();
+		$this->load->view('experience',$result); 
+		
+	}
+
+	function update_exp_data()
+	{
+		$id= $this->input->post('did');
+		if(!isset($checked))
+			{
+					$val=0;
+			}
+			else 
+			{	
+				$val=1;
+			}
+			$data = array(
+				'job_title'  => $this->input->post('job_title'),
+				'company_name'  => $this->input->post('company'),
+				'location'  => $this->input->post('location'),
+				'start_month'  => $this->input->post('start_month'),
+				'end_month'  => $this->input->post('end_month'),
+				'curent_job'  => $val,
+			);
+		$this->welcome_model->update_exp($data,$id);
+		$this->experience();
+		
+	}
+
+	public function delete_edu_data()
+	{
+		$eid = $this->uri->segment(3);
+		$id = $this->session->userdata('id');
+		$this->welcome_model->delete_edu($eid);
+		$this->education();
+		
+	}
+
+	function edit_edu_data()
+	{
+		$eid = $this->uri->segment(3);
+		$id = $this->session->userdata('id');
+		$result['exp']=$this->welcome_model->retreive_one_education($eid);
+			$result['data']=$this->welcome_model->retrieve_education($id);
+				
+		$this->form_validation->unset_field_data();
+		$this->load->view('experience',$result); 
+		
+	}
+
+	function update_edu_data()
+	{
+		$id= $this->input->post('did');
+		if(!isset($checked))
+			{
+					$val=0;
+			}
+			else 
+			{	
+				$val=1;
+			}
+			$data = array(
+				'school'  => $this->input->post('school'),
+				'degree_name'  => $this->input->post('degree_name'),
+				'field_of_study'  => $this->input->post('field_of_study'),
+				'location'  => $this->input->post('location'),
+				'start_date'  => $this->input->post('start_month_edu'),
+				'end_date'  => $this->input->post('end_month_edu'),
+				'current_degree'  => $val,
+			);
+		$this->welcome_model->update_edu($data,$id);
+		$this->education();
+		
 	}
 
 	function logout()

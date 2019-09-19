@@ -64,10 +64,13 @@ class Companydashboard extends CI_Controller {
 		$this->form_validation->set_rules('ntn_no', 'NTN no', 'required|alpha_numeric');
 		$this->form_validation->set_rules('employee_no', 'No of employees in organization', 'required|alpha_numeric');
 
+		$picture=$this-> upload_file('logoimage');
+
 		if($this->form_validation->run())
 		{
 			$data = array(
 				'name_of_organization'  => $this->input->post('name_of_organization'),
+				'logoimage'=> $picture,
 				'industry_type'  => $this->input->post('industry_type'),
 				'sector'  => $this->input->post('sector'),
 				'address'  => $this->input->post('address'),
@@ -109,6 +112,36 @@ class Companydashboard extends CI_Controller {
 		}
 	}
 
+	public function upload_file($image)
+        {
+
+        	if(isset($_FILES[$image]["name"]))  
+        	{
+                $config['upload_path']          = './uploads/';
+                $config['allowed_types']        = 'gif|jpg|png|pdf|doc';
+                $config['max_size']             = 102400;
+                $config['max_width']            = 1024;
+                $config['max_height']           = 768;
+                $this->load->library('upload', $config);
+                if ( ! $this->upload->do_upload($image))
+                {
+                    $error = array('error' => $this->upload->display_errors());
+                    print_r($error);
+                    exit;
+                    
+                }
+                else
+                {
+                    $data = array('upload_data' => $this->upload->data());
+                    return $data;
+                }
+            }
+            else
+            {
+            	echo "File is not select";
+            	exit;
+            }
+        }
 	
 
 	function logout()

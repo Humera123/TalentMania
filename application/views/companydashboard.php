@@ -3,7 +3,12 @@
 
 
 <div id='jobseeker_dashboard'>
-<?php echo form_open('companydashboard/validation', array('id' => 'company_info')) ?>
+<form action="companydashboard/validation" method="post" enctype="multipart/form-data" id="company_info")) ?>
+
+ <p class="float-left"><label> Upload Profile Image :</label><input type="file" name="logoimage" accept="image/*" onchange="loadimage(event,'profileimg')" />
+  <img name="profileimg" id="profileimg" width="100"alt="Profile Image" /></p>
+
+
   <p><input placeholder="Name of Organization..." type="text" name="name_of_organization" id="name_of_organization" class="form-control" value="<?php echo set_value('first_name'); ?>" />
   <span class="text-danger"><?php echo form_error('name_of_organization'); ?></span></p>
   <p><input placeholder="Industry Type..." type="text" name="industry_type" id="industry_type" class="form-control" value="<?php echo set_value('last_name'); ?>" />
@@ -37,3 +42,13 @@
   <p><input type="submit" name="Submit"  value="Submit" class="btn btn-info" /></p>
   <?php echo form_close() ?>
 </div>
+
+<script type="text/javascript">
+  function loadimage(event,$id) {
+    var output=document.getElementById($id);
+    output.src=URL.createObjectURL(event.target.files[0]);
+    // body...
+  }
+
+  
+</script>

@@ -23,10 +23,59 @@ class Welcome_model extends CI_Model
     }
  }
 
- function insert_exp($data)
+ function insert_exp($data,$id)
  {
-  $this->db->insert('jobseeker_exp', $data);
+    $this->db->insert('jobseeker_exp', $data);
  }
+
+function update_exp($data,$id)
+{
+    $this->db->where('experience_id', $id);
+    $this->db->update('jobseeker_exp', $data);
+}
+
+function update_edu($data,$id)
+{
+    $this->db->where('education_id', $id);
+    $this->db->update('jobseeker_edu', $data);
+}
+
+
+function retrieve_exp($id)
+{
+    $sql  = 'SELECT * ';
+    $sql .= ' FROM jobseeker_exp WHERE talentid = ?';
+    $sql_params = array($id);
+    $query = $this->db->query($sql, $sql_params);
+    return $query->result();
+}
+
+function retrieve_edu($id)
+{
+    $sql  = 'SELECT * ';
+    $sql .= ' FROM jobseeker_edu WHERE talentid = ?';
+    $sql_params = array($id);
+    $query = $this->db->query($sql, $sql_params);
+    return $query->result();
+}
+
+function retreive_one_experience($id)
+{
+    $sql  = 'SELECT * ';
+    $sql .= ' FROM jobseeker_exp WHERE experience_id = ?';
+    $sql_params = array($id);
+    $query = $this->db->query($sql, $sql_params);
+    return $query->result();
+}
+
+function retreive_one_education($id)
+{
+    $sql  = 'SELECT * ';
+    $sql .= ' FROM jobseeker_edu WHERE education_id = ?';
+    $sql_params = array($id);
+    $query = $this->db->query($sql, $sql_params);
+    return $query->result();
+}
 
  function insert_edu($data)
  {
@@ -57,7 +106,8 @@ class Welcome_model extends CI_Model
     if ($count === 0) {
         return 0;
     }
-    elseif($count >= 1){
+    elseif($count >= 1)
+    {
 
         foreach($query->result() as $row){
             $data[] = $row->start_month;
@@ -114,6 +164,16 @@ class Welcome_model extends CI_Model
     $data = array('title' => 'Edit Page', 'form' => $form);
     $this->load->view('welcome', $data);
   
+  }
+
+  function delete_exp($id)
+  {
+    $this->db->query("delete  from jobseeker_exp where experience_id='".$id."'");
+  }
+
+  function delete_edu($id)
+  {
+    $this->db->query("delete  from jobseeker_edu where education_id='".$id."'");
   }
 }
 

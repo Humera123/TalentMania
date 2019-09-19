@@ -1543,6 +1543,11 @@ class CI_Form_validation {
 		return $str;
 	}
 
+//Delete all field data 
+	 public function unset_field_data()
+    {    
+        unset($this->_field_data);    
+    }
 	// --------------------------------------------------------------------
 
 	/**
