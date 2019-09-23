@@ -5,9 +5,11 @@
 <div id='jobseeker_dashboard'>
 <form action='welcome/validation' method="post" enctype="multipart/form-data">
 
- <p class="float-left"><label> Upload Profile Image :</label><input type="file" name="proimage" accept="image/*" onchange="loadimage(event,'profileimg')" />
+   <p class="float-left"><label> Upload Profile Image :</label>
+  <input type="file" name="proimage" accept="image/*" onchange="loadimage(event,'profileimg')" />
   <img src="<?php echo base_url().'uploads/'.$form['pimage'] ?>" name="profileimg" id="profileimg" width="100"alt="Profile Image" /></p>
-
+  <input type="hidden" name="image_value" id= "image_value" value="<?php echo set_value('image_value', $form['pimage']); ?>"/>
+  <span class="text-danger"><?php echo form_error('image_value'); ?></span>
 
 
 
@@ -55,6 +57,7 @@
   function loadimage(event,$id) {
     var output=document.getElementById($id);
     output.src=URL.createObjectURL(event.target.files[0]);
+    document.getElementById("image_value").value = event.target.files[0]['name'];
     // body...
   }
 
