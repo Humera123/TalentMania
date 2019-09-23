@@ -32,6 +32,7 @@ class Welcome extends CI_Controller {
 		}
 		$this->load->library('form_validation');
 		$this->load->helper(array('form', 'url'));
+		$this->load->helper('form');
 		$this->load->library('encryptioncustom');
 		$this->load->model('welcome_model');
 	}
@@ -66,9 +67,9 @@ class Welcome extends CI_Controller {
 		
 		$id=$this->session->userdata('id');
 		$result['data']=$this->welcome_model->retrieve_edu($id);
-		$result['exp']=null;
+		$result['edu']=null;
 		$this->form_validation->unset_field_data();
-		$this->load->view('experience',$result); 
+		$this->load->view('education',$result); 
 		
 	}
 
@@ -211,7 +212,7 @@ class Welcome extends CI_Controller {
 		$this->form_validation->set_rules('company', 'Company', 'required|alpha_numeric_spaces');
 		$this->form_validation->set_rules('location', 'Location', 'required|alpha_numeric_spaces');
 		$this->form_validation->set_rules('start_month', 'Start of month', 'required');
-		$this->form_validation->set_rules('end_month', 'End of month', 'required');
+		//$this->form_validation->set_rules('end_month', 'End of month', 'required');
 		$this->form_validation->set_rules('current_job', 'Current Job');
 		
 		
@@ -221,10 +222,12 @@ class Welcome extends CI_Controller {
 			$checked=$this->input->post('current_job');
 			if(!isset($checked))
 			{
-					$val=0;
+				$date=$this->input->post('end_month');
+				$val=0;
 			}
 			else 
 			{	
+				$date=date("Y-m-d");
 				$val=1;
 			}
 			$data = array(
@@ -232,14 +235,13 @@ class Welcome extends CI_Controller {
 				'company_name'  => $this->input->post('company'),
 				'location'  => $this->input->post('location'),
 				'start_month'  => $this->input->post('start_month'),
-				'end_month'  => $this->input->post('end_month'),
+				'end_month'  => $date,
 				'curent_job'  => $val,
 				'talentid' => $this->session->userdata('id')
 			);
-
 			$id=$this->input->post('job_title');
 			$result = $this->welcome_model->insert_exp($data,$id); 
-			
+		
 			if($result == '')
 			{
 				$this->experience();
@@ -340,7 +342,9 @@ class Welcome extends CI_Controller {
 	}
 
 
-	function totalexperience(){
+	function totalexperience()
+	{
+		
 		$id = $this->session->userdata('id');
 		$result = $this->welcome_model->getExp($id);
 		if($result == 0){
@@ -351,7 +355,6 @@ class Welcome extends CI_Controller {
 		elseif($result == 1){
 			$this->education();
 		}
-
 	}
 
 	public function delete_exp_data()

@@ -3,7 +3,7 @@
 
 
 <div id='jobseeker_dashboard'>
-<form action='welcome/validation' method="post" enctype="multipart/form-data">
+<form action="<?php echo base_url();?>welcome/validation" id="experience_info" method="post" enctype="multipart/form-data">
 
  <p class="float-left"><label> Upload Profile Image :</label><input type="file" name="proimage" accept="image/*" onchange="loadimage(event,'profileimg')" />
   <img src="<?php echo base_url().'uploads/'.$form['pimage'] ?>" name="profileimg" id="profileimg" width="100"alt="Profile Image" /></p>
@@ -57,7 +57,6 @@
     output.src=URL.createObjectURL(event.target.files[0]);
     // body...
   }
-
   
 </script>
  
