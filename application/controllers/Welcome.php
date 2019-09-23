@@ -97,14 +97,18 @@ class Welcome extends CI_Controller {
 		/*$this->form_validation->set_rules('cnic_front', 'CNIC front', 'required');
 		$this->form_validation->set_rules('cnic_back', 'CNIC back', 'required');
 		$this->form_validation->set_rules('last_degree', 'Last Degree', 'required');*/
-		$picture=$this-> upload_file('proimage');
+		if(isset($_FILES['proimage']["name"])){
+			if(($_FILES['proimage']["name"])!== ""){
+				$picture=$this-> upload_file('proimage');
+			}
+		}
 		
 		
 		if($this->form_validation->run())
 		{
 			
 			$data = array(
-				'pimage' => $picture['upload_data']['file_name'],
+				'pimage' => $this->input->post('image_value'),
 				'first_name'  => $this->input->post('first_name'),
 				'last_name'  => $this->input->post('last_name'),
 				'father_name'  => $this->input->post('father_name'),
@@ -149,9 +153,10 @@ class Welcome extends CI_Controller {
 	}
 	
 	 public function upload_file($image)
-        {
+        {	
 
-        	if(isset($_FILES[$image]["name"]))  
+			
+			if(isset($_FILES[$image]["name"]))  
         	{
                 $config['upload_path']          = './uploads/';
                 $config['allowed_types']        = 'gif|jpg|png|pdf|doc';
