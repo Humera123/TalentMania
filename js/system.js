@@ -39,7 +39,7 @@ $(function() {
           success: function(response){
            $("#jobseeker_dashboard").html(response);
             if(response.status == 'success'){
-              alert("xxx");
+              
               $("#loginFormdiv").load(responce);
             }
             else{

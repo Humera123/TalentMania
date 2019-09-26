@@ -34,7 +34,7 @@ class Addjob extends CI_Controller {
 		
 		$this->form_validation->set_rules('job_title', 'Job title', 'required');
 		$this->form_validation->set_rules('job_desc', 'Job description', 'required');
-		$this->form_validation->set_rules('skills_required', 'Skill', 'required');
+		//$this->form_validation->set_rules('skills_required', 'Skill', 'required');
 		$this->form_validation->set_rules('career_level', 'Career level', 'required');
 		$this->form_validation->set_rules('qualification', 'qualification', 'required');
 		$this->form_validation->set_rules('position', 'position', 'required');
@@ -45,6 +45,12 @@ class Addjob extends CI_Controller {
 		$this->form_validation->set_rules('min_salary', 'min salary', 'required');
 		$this->form_validation->set_rules('max_salary', 'max salary', 'required');
 		$this->form_validation->set_rules('gender', 'gender', 'required');
+		$tskill = $this->input->post('tskill');
+		$skill = array();
+		for($i = 1; $i <= $tskill; $i++){
+			$skill[] = $this->input->post('skill'.$i);
+		}
+		$myJSON = json_encode($skill);
 		
 
 		if($this->form_validation->run())
@@ -52,7 +58,7 @@ class Addjob extends CI_Controller {
 			$data = array(
 				'job_title'  => $this->input->post('job_title'),
 				'job_desc'  => $this->input->post('job_desc'),
-				'skills_required'  => $this->input->post('skills_required'),
+				'skills_required'  => $myJSON,
 				'career_level'  => $this->input->post('career_level'),
 				'qualification'  => $this->input->post('qualification'),
 				'qualification_range'  => $this->input->post('qualification_range'),
@@ -66,8 +72,8 @@ class Addjob extends CI_Controller {
 				'talentid' => $this->session->userdata('id')
 				
 			);
-
-			
+            
+		
 			$id = $this->session->userdata('id');
 			$result = $this->addjob_model->insert_info($data,$id); 
 			

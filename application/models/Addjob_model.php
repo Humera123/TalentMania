@@ -7,6 +7,7 @@ class Addjob_model extends CI_Model
     $query = $this->db->get_where('newjob_info', array(//making selection
         'talentid' => $id
     ));
+
     $count = $query->num_rows();
     if ($count === 0) {
 
