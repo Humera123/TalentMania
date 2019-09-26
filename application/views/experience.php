@@ -87,12 +87,12 @@
     <span class="text-danger"><?php echo form_error('location'); ?></span></p>
     <p><input placeholder="Start Month..." type="date" name="start_month" class="form-control"/>
     <span class="text-danger"><?php echo form_error('start_month'); ?></span></p>
-    <p><input placeholder="End Month..." type="date" name="end_month" class="form-control"  />
+    <p><input placeholder="End Month..." type="date" name="end_month" id="end_month" class="form-control"  />
     <span class="text-danger"><?php echo form_error('end_month'); ?></span></p>
-    <p><input type="checkbox" name="current_job"  class="form-control"> Current Job
+    <p><input type="checkbox" name="current_job" id="current_job" class="form-control"  onclick="myFunction()"> Current Job
     <span class="text-danger"><?php echo form_error('current_job'); ?></span></p>
     <input type="submit" name="submit" value="Submit" class="btn btn-info" />
-    <input type="button" name="next" id="next" value="Next" class="btn btn-info" />
+    <a href="<?php echo base_url().'welcome/totalexperience'; ?>"><input type="button" name="next" id="next" value="Next" class="btn btn-info" /></a>
 
     
  
@@ -106,6 +106,7 @@
 
 
 <script>
+
 $(function() {
   $("#jobseeker_exp").on('submit', function(e) {
     
@@ -131,24 +132,20 @@ $(function() {
       });
   });
 
-  $("#next").on('click', function(e) {
-      e.preventDefault();
-      
-      $.ajax({
-          url: "<?php echo base_url()?>welcome/totalexperience",
-          type: 'post',
-          
-
-          success: function(response){
-           $("#jobseeker_dashboard").html(response);
-            if(response.status == 'success'){
-              $("#loginFormdiv").load(responce);
-            }
-            else{
-              alert("xxxxx");
-            } 
-          }
-      });
-  });
+  
 });
+
+  function myFunction() {
+  // Get the checkbox
+  var checkBox = document.getElementById("current_job");
+  // Get the output text
+  var text = document.getElementById("end_month");
+
+  // If the checkbox is checked, display the output text
+  if (checkBox.checked == true){
+    text.style.display = "none";
+  } else {
+    text.style.display = "display";
+  }
+}
 </script>

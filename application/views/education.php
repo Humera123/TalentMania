@@ -48,9 +48,9 @@
       </div>
 
       <?php
-      if($exp)
+      if($edu)
       {
-        foreach ($exp as $row) 
+        foreach ($edu as $row) 
         {
         ?>
 <?php echo form_open('welcome/update_edu_data', array('id' => 'jobseeker_edu')) ?> 
