@@ -41,6 +41,18 @@ class Companydashboard_model extends CI_Model
    return false;
   }
  }
+ function retrieve_info($id)
+  {
+    $sql  = 'SELECT *';
+    $sql .= ' FROM company_info WHERE talentid = ?';
+    $sql_params = array($id);
+    $query = $this->db->query($sql, $sql_params);
+    $form = $query->row_array();
+
+    $data = array('title' => 'Edit Page', 'form' => $form);
+    $this->load->view('Companydashboard', $data);
+  
+  }
 }
 
 ?>
