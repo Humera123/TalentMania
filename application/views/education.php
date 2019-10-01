@@ -56,7 +56,18 @@
 <?php echo form_open('welcome/update_edu_data', array('id' => 'jobseeker_edu')) ?> 
     <p><input placeholder="School..." type="text" name="school" class="form-control" value="<?php echo set_value('school'); ?>" />
     <span class="text-danger"><?php echo form_error('school'); ?></span></p>
-    <p><input placeholder="Degree/Certificate..." type="text" name="degree_name" class="form-control" value="<?php echo set_value('degree_name'); ?>" />
+    <p><select name="degree_name" id="degree_name" class="form-control" value="<?php echo set_value('degree_name'); ?>">
+      <option value="1">Non-Matriculation</option>
+      <option value="2">Matriculation/O-level</option>
+      <option value="3">Intermediate/A-level</option>
+      <option value="4">Bachelor</option>
+      <option value="5">Master</option>
+      <option value="6">MBBS/D-Pharm/BDS</option>
+      <option value="7">M-Phill</option>
+      <option value="8">PHD/Doctorate</option>
+      <option value="9">Certification</option>
+      <option value="10">Diploma</option>
+    </select>
     <span class="text-danger"><?php echo form_error('degree_name'); ?></span></p>
     <p><input placeholder="Field of study..." type="text" name="field_of_study" class="form-control" value="<?php echo set_value('field_of_study'); ?>" />
     <span class="text-danger"><?php echo form_error('field_of_study'); ?></span></p>

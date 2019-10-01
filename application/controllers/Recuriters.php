@@ -42,7 +42,23 @@ class Recuriters extends CI_Controller {
 		$this->load->view('recuriters',$data);
 		$this->load->view('templates/footer');
 	}
-    
+	
+	function getRecuriters(){
+		$data = array(
+			'jobid' => $this->input->post('jobid'),
+			'skills' => $this->input->post('skills'),
+			'exp' => $this->input->post('exp'),
+			'edu' => $this->input->post('edu'),
+			'gender' => $this->input->post('gender')
+		);
+		
+		$result = $this->recuriters_model->getrecuriters($data);
+		
+		$data_result = $this->recuriters_model->getRecuritersName($result);
+		foreach($data_result as $key=> $val){
+			echo "<p><a href='".base_url()."/profile/$key'>$val</a></p>";
+		}
+	}
 
 	function logout()
 	{

@@ -9,7 +9,9 @@
     <span class="text-danger"><?php echo form_error('job_desc'); ?></span></p>
   <p><input placeholder="What skills are required for this job..." name="skills_required" id="basics" class="form-control" value="<?php echo set_value('skills_required'); ?>" />
     <span class="text-danger"><?php echo form_error('skills_required'); ?></span></p>
-  <p><select name="career_level" id="career_level" class="form-control" value="<?php echo set_value('career_level'); ?>">
+    <div id="skill_set"></div>
+    <p id="total_skills"></p>
+    <p><select name="career_level" id="career_level" class="form-control" value="<?php echo set_value('career_level'); ?>">
       <option value="1">Intern/Student</option>
       <option value="2">Entery Level</option>
       <option value="3">Experienced Professional</option>
@@ -251,9 +253,43 @@
 </div>
 
 <script>
-  var options = {
-    data: ["blue", "green", "pink", "red", "yellow"]
+   var options = {
+    url: "<?php echo base_url()?>js/skillsset.json",
+    getValue: "name",
+    list: {
+          match: {
+              enabled: true
+          }
+      },
+
+      theme: "plate-dark"
   };
 
   $("#basics").easyAutocomplete(options);
+
+  var i=0;
+  var items;
+
+  function getValuebasic() { 
+      
+      var inputVal = document.getElementById("basics").value;
+      i=i+1;
+      $("#skill_set").append("<span class='circle' id='skillvalue"+i+"'>"+inputVal+"<a href='#'  onclick = 'getskills()'class='cross'>X</a><input type='hidden' id='skill"+i+"' name='skill"+i+"' value='"+inputVal+"'/></span>");
+      $("#total_skills").html("<input value='"+i+"' type='hidden' name='tskill'/>")
+      $("#basics").val("");
+      items = document.getElementsByClassName('cross');
+   
+   }
+   
+   function getskills(){
+   
+   for(var i = 0; i < items.length; i++)
+   {
+      item = items[i];
+      item.onclick = function(e)
+         {
+            e.target.parentNode.remove();
+         };
+   }
+}
 </script>

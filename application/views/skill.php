@@ -11,12 +11,21 @@
 var i=0;
 var items;
  var options = {
-	data: ["blue", "green", "pink", "red", "yellow"]
+	url: "<?php echo base_url()?>js/skillsset.json",
+   getValue: "name",
+   list: {
+        match: {
+            enabled: true
+        }
+    },
+
+    theme: "plate-dark"
+
 };
 
 $("#basics").easyAutocomplete(options);
 
-$("#basics").on("change", function() { 
+function getValuebasic() { 
       
    var inputVal = document.getElementById("basics").value;
    i=i+1;
@@ -25,9 +34,7 @@ $("#basics").on("change", function() {
    $("#basics").val("");
    items = document.getElementsByClassName('cross');
 
-}); 
-
-
+} 
 
 function getskills(){
    
