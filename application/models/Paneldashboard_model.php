@@ -57,6 +57,55 @@ class Paneldashboard_model extends CI_Model
     $this->load->view('Paneldashboard', $data);
   
   }
+
+   function insert_skill($data,$id)
+ {
+    
+    foreach($data as $d)
+    {
+     $value=array('pskill_name'=>$d,'talentid'=>$id);
+     $this->db->insert('panel_skill', $value);
+    }
+   
+ }
+  function getExp($id)
+ {
+    
+    $query = null;
+    $data = array();
+    $data2  = array();
+    $query = $this->db->get_where('panel_exp', array(//making selection
+        'talentid' => $id
+    ));
+    $count = $query->num_rows();
+    if ($count === 0) {
+        return 0;
+    }
+    elseif($count >= 1)
+    {
+
+        foreach($query->result() as $row){
+            $data[] = $row->start_month;
+            $data2[]  = $row->end_month;
+        }
+        
+        $min_date = min($data);
+        $max_date = max($data2);
+        $diff = date_diff(date_create($min_date), date_create($max_date));
+        if($diff->format('%y') == 0){
+            $value = array('experience'=>37);
+        }
+        else if($diff->format('%m') == 0){
+            $value = array('experience'=>0);
+        }
+        else{
+            $value = array('experience'=>$diff->format);
+        }
+        $this->db->where('talentid',$id);
+        $this->db->update('panel_info',$value);
+        return 1;
+    }
+ }
 }
 
 

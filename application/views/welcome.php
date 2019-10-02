@@ -1,7 +1,6 @@
 <br /><br /><br /><h1 align="center">Welcome User</h1>
 <p align="center"><a href="<?php echo base_url()?>welcome/logout">Logout</a></p>
 
-
 <div id='jobseeker_dashboard'>
 <form action="<?php echo base_url();?>welcome/validation" id="experience_info" method="post" enctype="multipart/form-data">
 

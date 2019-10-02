@@ -86,10 +86,11 @@ function retreive_one_education($id)
  function insert_skill($data,$id)
  {
     
-    foreach($data as $d){
+    foreach($data as $d)
+    {
      $value=array('skill_name'=>$d,'talentid'=>$id);
      $this->db->insert('jobseeker_skill', $value);
-   }
+    }
    
  }
 

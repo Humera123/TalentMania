@@ -59,6 +59,11 @@ class Paneldashboard extends CI_Controller {
 		
 	}
 
+	function skill()
+	{
+		$this->load->view('panelskill');
+	}
+
 
 	function validation()
 	{
@@ -98,6 +103,7 @@ class Paneldashboard extends CI_Controller {
 				'talentid' => $this->session->userdata('id')
 				
 			);
+
 
 			$id = $this->session->userdata('id');
 			$result = $this->paneldashboard_model->insert_info($data,$id); 
@@ -187,7 +193,7 @@ class Paneldashboard extends CI_Controller {
 			if($result == '')
 			{		
 				
-				$this->education();
+				$this->experience();
 				
 			}
 			else
@@ -202,6 +208,46 @@ class Paneldashboard extends CI_Controller {
 			$this->experience();
 		}
     }
+
+    function totalexperience()
+	{
+		
+		$id = $this->session->userdata('id');
+		$result = $this->paneldashboard_model->getExp($id);
+		if($result == 0){
+			$this->output
+				->set_content_type('application/json')
+				->set_output(json_encode(['message'=>"", 'status'=>'Fresh Graduate']));
+		}
+		elseif($result == 1){
+			$this->skill();
+		}
+	}
+
+    function validation_skill()
+	{
+		$tskill = $this->input->post('tskill');
+		$data = array();
+		for($i = 1; $i <= $tskill; $i++){
+ 			$data[] = $this->input->post('skill'.$i);
+		}
+		
+			$id = $this->session->userdata('id');
+			$result = $this->paneldashboard_model->insert_skill($data,$id); 
+			
+			if($result == '')
+			{
+						
+				$this->index($this->session->set_flashdata('true', 'You Successfully Complete your Profile'));
+				
+			}
+			else
+			{
+				$this->output
+				->set_content_type('application/json')
+				->set_output(json_encode(['message'=>$result, 'status'=>'faliure']));
+			}
+	}
     
 
 	function logout()

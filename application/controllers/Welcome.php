@@ -73,7 +73,8 @@ class Welcome extends CI_Controller {
 		
 	}
 
-	function skill(){
+	function skill()
+	{
 		
 		$this->load->view('skill');
 		
@@ -377,8 +378,9 @@ class Welcome extends CI_Controller {
 			$result = $this->welcome_model->insert_skill($data,$id); 
 			
 			if($result == '')
-			{		
-				$this->index();
+			{
+						
+				$this->load->view('jobseeker',$this->session->set_flashdata('true', 'You Successfully Complete your Profile'));
 				
 			}
 			else
@@ -396,7 +398,7 @@ class Welcome extends CI_Controller {
 	{
 		
 		$id = $this->session->userdata('id');
-		$result = $this->welcome_model->getExp($id);
+		$result = $this->welcome_model->getEdu($id);
 		if($result == 0){
 			$this->output
 				->set_content_type('application/json')

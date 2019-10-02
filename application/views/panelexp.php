@@ -11,7 +11,10 @@
     <span class="text-danger"><?php echo form_error('end_month'); ?></span></p>
     <p><input type="checkbox" name="current_job" value="1" class="form-control"> Current Job
     <span class="text-danger"><?php echo form_error('current_job'); ?></span></p>
+
+    
     <input type="submit" name="submit" value="Submit" class="btn btn-info" />
+    <a href="<?php echo base_url().'paneldashboard/totalexperience'; ?>"><input type="button" name="next" id="next" value="Next" class="btn btn-info" /></a>
 <?php echo form_close() ?>
 
 <script>
