@@ -40,16 +40,16 @@ class Welcome extends CI_Controller {
 	function index()
 	{
 		$this->load->view('templates/header');
-		if($this->session->userdata('id'))
-		{
-			$id=$this->session->userdata('id');
-			$this->welcome_model->retrieve_info($id);
-		}
-		else 
-		{
-			$this->load->view('welcome');
-		}
-		$this->load->view('templates/footer');
+		// if($this->session->userdata('id'))
+		// {
+		// 	$id=$this->session->userdata('id');
+		// 	$this->welcome_model->retrieve_info($id);
+		// }
+		// else 
+		// {
+			$this->load->view('skill');
+		// }
+		// $this->load->view('templates/footer');
 	}
 
 	function experience()
@@ -378,11 +378,11 @@ class Welcome extends CI_Controller {
 			$result = $this->welcome_model->insert_skill($data,$id); 
 			
 			if($result == '')
+
 			{
 						
 				$this->load->view('jobseeker',$this->session->set_flashdata('true', 'You Successfully Complete your Profile'));
-				
-			}
+		}
 			else
 			{
 				$this->output

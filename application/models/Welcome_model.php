@@ -176,6 +176,31 @@ function retreive_one_education($id)
   {
     $this->db->query("delete  from jobseeker_edu where education_id='".$id."'");
   }
+
+  function assign_skill()
+{
+    $skill_array = array();
+    $this->db->select('*');
+    $this->db->from('panel_skill');
+    $this->db->join('jobseeker_skill', 'panel_skill.skill_name = jobseeker_skill.skill_name');
+    $this->db->where(array('jobseeker_skill.rating' => 0,
+                           'panel_skill.emp_assign <' => 3,
+                            'jobseeker_skill.author_id' => 0 ));
+    
+    $query = $this->db->get();
+    
+    if($query->num_rows() != 0){
+       foreach($query->result() as $row){
+           
+          print_r($row);
+           
+       }
+       
+    }
+
+    
+}
+
 }
 
 ?>

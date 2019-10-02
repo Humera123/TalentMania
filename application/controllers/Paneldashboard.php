@@ -53,15 +53,32 @@ class Paneldashboard extends CI_Controller {
 		$this->load->view('templates/footer');
 	}
 
-	function experience(){
+	function panel(){
+		$this->load->view('templates/header');
+		$this->load->view('panel');
+		$this->load->view('templates/footer');
+	}
+
+	function experience()
+	{
 		
 		$this->load->view('panelexp');
 		
 	}
 
+	function education()
+	{
+		
+		$this->load->view('paneledu');
+		
+	}
+
 	function skill()
 	{
+		
 		$this->load->view('panelskill');
+		
+
 	}
 
 
@@ -207,6 +224,7 @@ class Paneldashboard extends CI_Controller {
 		{
 			$this->experience();
 		}
+
     }
 
     function totalexperience()
@@ -224,7 +242,62 @@ class Paneldashboard extends CI_Controller {
 		}
 	}
 
-    function validation_skill()
+    function validation_edu()
+	{
+		$this->form_validation->set_rules('school', 'School', 'required|alpha_numeric_spaces');
+		$this->form_validation->set_rules('degree_name', 'Degree/Certificate', 'required|alpha_numeric_spaces');
+		$this->form_validation->set_rules('field_of_study', 'Field of study', 'required|alpha_numeric_spaces');
+		$this->form_validation->set_rules('location', 'Location', 'required|alpha_numeric_spaces');
+		$this->form_validation->set_rules('start_month_edu', 'Start of month', 'required');
+		$this->form_validation->set_rules('end_month_edu', 'End of month', 'required');
+		$this->form_validation->set_rules('current_degree', 'Current Job');
+		
+		if($this->form_validation->run())
+		{
+			$checked=$this->input->post('current_degree');
+			if(!isset($checked))
+			{
+					$val=0;
+			}
+			else 
+			{	
+				$val=1;
+			}
+			$data = array(
+				'school'  => $this->input->post('school'),
+				'degree_name'  => $this->input->post('degree_name'),
+				'field_of_study'  => $this->input->post('field_of_study'),
+				'location'  => $this->input->post('location'),
+				'start_date'  => $this->input->post('start_month_edu'),
+				'end_date'  => $this->input->post('end_month_edu'),
+				'current_degree'  => $val,
+				'talentid' => $this->session->userdata('id')
+				
+			);
+			
+			$id = $this->session->userdata('id');
+			$result = $this->paneldashboard_model->insert_edu($data); 
+			
+			if($result == '')
+			{		
+				
+				$this->skill();
+				
+			}
+			else
+			{
+				$this->output
+				->set_content_type('application/json')
+				->set_output(json_encode(['message'=>$result, 'status'=>'faliure']));
+			}
+		}
+		else
+		{
+			$this->education();
+		}
+	}
+
+	function validation_skill()
 	{
 		$tskill = $this->input->post('tskill');
 		$data = array();
@@ -237,9 +310,8 @@ class Paneldashboard extends CI_Controller {
 			
 			if($result == '')
 			{
-						
-				$this->index($this->session->set_flashdata('true', 'You Successfully Complete your Profile'));
-				
+				$this->panel($this->session->set_flashdata('true', 'You Successfully Complete your Profile'));
+			
 			}
 			else
 			{

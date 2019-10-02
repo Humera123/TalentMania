@@ -34,6 +34,7 @@ class Recuriters_model extends CI_Model
       'experience >=' => $data['exp'],
       'gender' => $data['gender'],
       'approval >' => '0',
+      'hired' => '0',
     ));
    $query =  $this->db->get();
    if($query->num_rows() > 0){
