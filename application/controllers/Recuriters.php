@@ -51,12 +51,19 @@ class Recuriters extends CI_Controller {
 			'edu' => $this->input->post('edu'),
 			'gender' => $this->input->post('gender')
 		);
+
+		$job_id = $this->input->post('jobid');
 		
 		$result = $this->recuriters_model->getrecuriters($data);
 		
 		$data_result = $this->recuriters_model->getRecuritersName($result);
+		if($data_result != ""){
 		foreach($data_result as $key=> $val){
-			echo "<p><a href='".base_url()."/profile/$key'>$val</a></p>";
+			echo "<p><a href='".base_url()."profile/id=$key/jobid=$job_id'>$val</a></p>";
+		}
+		}
+		else{
+			echo "no data found";
 		}
 	}
 

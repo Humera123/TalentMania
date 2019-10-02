@@ -25,6 +25,20 @@ class Paneldashboard_model extends CI_Model
   $this->db->insert('panel_exp', $data);
  }
 
+ function insert_edu($data)
+ {
+  $this->db->insert('panel_edu', $data);
+ }
+
+ function insert_skill($data,$id)
+ {
+    
+    foreach($data as $d){
+     $value=array('skill_name'=>$d,'panelid'=>$id);
+     $this->db->insert('panel_skill', $value);
+   }
+   
+ }
 
  function verify_email($key)
  {

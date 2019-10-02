@@ -40,16 +40,16 @@ class Welcome extends CI_Controller {
 	function index()
 	{
 		$this->load->view('templates/header');
-		if($this->session->userdata('id'))
-		{
-			$id=$this->session->userdata('id');
-			$this->welcome_model->retrieve_info($id);
-		}
-		else 
-		{
-			$this->load->view('welcome');
-		}
-		$this->load->view('templates/footer');
+		// if($this->session->userdata('id'))
+		// {
+		// 	$id=$this->session->userdata('id');
+		// 	$this->welcome_model->retrieve_info($id);
+		// }
+		// else 
+		// {
+			$this->load->view('skill');
+		// }
+		// $this->load->view('templates/footer');
 	}
 
 	function experience()
@@ -333,6 +333,7 @@ class Welcome extends CI_Controller {
 			
 			if($result == '')
 			{		
+				$this->welcome_model->assign_skill($id);
 				$this->index();
 				
 			}
