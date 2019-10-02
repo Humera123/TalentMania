@@ -31,6 +31,9 @@ class Paneldashboard extends CI_Controller {
 			redirect('login');
 		}
 		$this->load->library('form_validation');
+		$this->load->helper(array('form', 'url'));
+		$this->load->helper('form');
+
 		$this->load->library('encryptioncustom');
 		$this->load->model('paneldashboard_model');
 	}
@@ -38,7 +41,15 @@ class Paneldashboard extends CI_Controller {
 	function index()
 	{
 		$this->load->view('templates/header');
-		$this->load->view('paneldashboard');
+		if($this->session->userdata('id'))
+		{
+			$id=$this->session->userdata('id');
+			$this->paneldashboard_model->retrieve_info($id);
+		}
+		else 
+		{
+			$this->load->view('paneldashboard');
+		}
 		$this->load->view('templates/footer');
 	}
 
@@ -78,10 +89,23 @@ class Paneldashboard extends CI_Controller {
 		$this->form_validation->set_rules('country', 'Country', 'required|alpha');
 		$this->form_validation->set_rules('skype_id', 'Skype Id', 'required|alpha_numeric');
 		$this->form_validation->set_rules('linkdin_profile', 'Linkdin Profile', 'required|alpha_numeric');
+
+		if(isset($_FILES['profile_image']['name']))
+		{
+			$profile_img=$this-> upload('profile_image');
+			$profile_img_name=$profile_img['upload_data']['file_name'];
+		}
+		else
+		{
+			$profile_img_name=$this->input->post('image_value');
+		
+		}
+		
 		
 		if($this->form_validation->run())
 		{
 			$data = array(
+				'pimage'=> $profile_img_name,
 				'first_name'  => $this->input->post('first_name'),
 				'last_name'  => $this->input->post('last_name'),
 				'mobileno'  => $this->input->post('mobileno'),
@@ -93,7 +117,6 @@ class Paneldashboard extends CI_Controller {
 				
 			);
 
-			
 			$id = $this->session->userdata('id');
 			$result = $this->paneldashboard_model->insert_info($data,$id); 
 			
@@ -113,6 +136,42 @@ class Paneldashboard extends CI_Controller {
 		{
 			$this->index();
 		}
+	}
+
+
+	public function upload_file($image)
+        {	
+
+			
+			    $config['upload_path']          = './uploads/';
+                $config['allowed_types']        = 'gif|jpg|png';
+                $config['max_size']             = 102400;
+                $config['max_width']            = 1024;
+                $config['max_height']           = 768;
+                $this->load->library('upload', $config);
+                if ( ! $this->upload->do_upload($image))
+                {
+                    $error = array('error' => $this->upload->display_errors());
+                    print_r($error);
+                    exit;
+                    
+                }
+                else
+                {
+                    $data = array('upload_data' => $this->upload->data());
+                    return $data;
+                }
+            }
+            
+        public function upload($f)
+	{
+		if(isset($_FILES[$f]["name"])){
+			if(($_FILES[$f]["name"])!== ""){
+				$picture=$this-> upload_file($f);
+				return $picture;
+			}
+		}
+
 	}
 
 	function validation_exp()

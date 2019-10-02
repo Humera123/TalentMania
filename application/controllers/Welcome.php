@@ -97,18 +97,64 @@ class Welcome extends CI_Controller {
 		/*$this->form_validation->set_rules('cnic_front', 'CNIC front', 'required');
 		$this->form_validation->set_rules('cnic_back', 'CNIC back', 'required');
 		$this->form_validation->set_rules('last_degree', 'Last Degree', 'required');*/
-		if(isset($_FILES['proimage']["name"])){
-			if(($_FILES['proimage']["name"])!== ""){
-				$picture=$this-> upload_file('proimage');
-			}
+
+		$profile_img='';
+		$cnic_front_img_name='';
+		$cnic_back_img_name='';
+		$last_degree_value='';
+
+		if(isset($_FILES['proimage']['name']) & isset($_FILES['cnic_front']['name']) & isset($_FILES['cnic_back']['name']) & isset($_FILES['last_degree']['name']))
+		{
+			$profile_img=$this-> upload('proimage');
+			$profile_img_name=$profile_img['upload_data']['file_name'];
+			$cnic_front_img_name=$this->input->post('cnic_front_value');
+			$cnic_back_img_name=$this->input->post('cnic_back_value');
+			$last_degree_img_name=$this->input->post('last_degree_value');	
+
 		}
-		
-		
+
+		else if(!isset($_FILES['proimage']['name']) & isset($_FILES['cnic_front']['name']) & isset($_FILES['cnic_back']['name']) & isset($_FILES['last_degree']['name']))
+		{
+			$cnic_front_img=$this-> upload('cnic_front');
+			$cnic_front_img_name=$cnic_front_img['upload_data']['file_name'];
+			$profile_img_name=$this->input->post('image_value');
+			$cnic_back_img=$this-> upload('cnic_back');
+			$cnic_back_img_name=$cnic_back_img['upload_data']['file_name'];
+			$last_degree_img=$this->upload('last_degree');	
+			$last_degree_img_name=$last_degree_img['upload_data']['file_name'];
+		}
+		else if(!isset($_FILES['proimage']['name']) & !isset($_FILES['cnic_front']['name']) & isset($_FILES['cnic_back']['name']) & isset($_FILES['last_degree']['name']))
+		{
+			$cnic_back_img=$this-> upload('cnic_back');
+			$cnic_back_img_name=$cnic_back_img['upload_data']['file_name'];
+			$last_degree_img=$this->upload('last_degree');	
+			$last_degree_img_name=$last_degree_img['upload_data']['file_name'];
+			$profile_img_name=$this->input->post('image_value');
+			$cnic_front_img_name=$this->input->post('cnic_front_value');
+		}
+		else if(!isset($_FILES['proimage']['name']) & !isset($_FILES['cnic_front']['name']) & !isset($_FILES['cnic_back']['name']) & isset($_FILES['last_degree']['name']))
+		{
+			$last_degree_img=$this->upload('last_degree');	
+			$last_degree_img_name=$last_degree_img['upload_data']['file_name'];
+			$profile_img_name=$this->input->post('image_value');
+			$cnic_front_img_name=$this->input->post('cnic_front_value');
+			$cnic_back_img_name=$this->input->post('cnic_back_value');
+			
+		}
+		else 
+		{
+			$profile_img_name=$this->input->post('image_value');
+			$cnic_front_img_name=$this->input->post('cnic_front_value');
+			$cnic_back_img_name=$this->input->post('cnic_back_value');
+			$last_degree_img_name=$this->input->post('last_degree_value');
+			
+		}
+
 		if($this->form_validation->run())
 		{
 			
 			$data = array(
-				'pimage' => $this->input->post('image_value'),
+				'pimage' => $profile_img_name,
 				'first_name'  => $this->input->post('first_name'),
 				'last_name'  => $this->input->post('last_name'),
 				'father_name'  => $this->input->post('father_name'),
@@ -121,13 +167,13 @@ class Welcome extends CI_Controller {
 				'skype_id'  => $this->input->post('skype_id'),
 				'linkdin_profile'  => $this->input->post('linkdin_profile'),
 				'gender'  => $this->input->post('gender'),
-				/*'cnic_front'  => $this->input->post('cnic_front'),
-				'cnic_back'  => $this->input->post('cnic_back'),
-				'last_degree'  => $this->input->post('last_degree'),*/
+				'cnic_front'  =>$cnic_front_img_name,
+				'cnic_back'  => $cnic_back_img_name,
+				'last_degree'  => $last_degree_img_name,
 				'talentid' => $this->session->userdata('id')
 				
 			);
-						
+			
 			$id = $this->session->userdata('id');
 
 			$result = $this->welcome_model->insert_info($data,$id); 
@@ -154,36 +200,35 @@ class Welcome extends CI_Controller {
 	
 	 public function upload_file($image)
         {	
-
-			
-			if(isset($_FILES[$image]["name"]))  
-        	{
-                $config['upload_path']          = './uploads/';
-                $config['allowed_types']        = 'gif|jpg|png|pdf|doc';
+				$config['upload_path']          = './uploads/';
+                $config['allowed_types']        = 'gif|jpg|png';
                 $config['max_size']             = 102400;
                 $config['max_width']            = 1024;
                 $config['max_height']           = 768;
                 $this->load->library('upload', $config);
                 if ( ! $this->upload->do_upload($image))
                 {
-                    $error = array('error' => $this->upload->display_errors());
-                    print_r($error);
-                    exit;
-                    
+                    $this->form_validation->set_message($image, '%s is not valid.');              
                 }
                 else
                 {
                     $data = array('upload_data' => $this->upload->data());
                     return $data;
                 }
-            }
-            else
-            {
-            	echo "File is not select";
-            	exit;
-            }
         }
+          
 	
+	public function upload($f)
+	{
+		if(isset($_FILES[$f]["name"])){
+			if(($_FILES[$f]["name"])!== ""){
+				$picture=$this-> upload_file($f);
+				return $picture;
+			}
+		}
+
+	}
+
 	public function validate_mobileno($str)
 	{
         if (preg_match("/[\d\s-+]/", $str) !== 0)

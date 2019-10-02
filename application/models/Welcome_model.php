@@ -16,7 +16,7 @@ class Welcome_model extends CI_Model
 
         $value=array('pimage'=>$data['pimage'],'first_name'=>$data['first_name'],'last_name'=>$data['last_name'],'father_name'=>$data['father_name'],'date_of_birth'=>$data['date_of_birth'],
         'nationality'=>$data['nationality'],'mobileno'=>$data['mobileno'],'city'=>$data['city'],'country'=>$data['country'],
-        'address'=>$data['address'],'skype_id'=>$data['skype_id'],'linkdin_profile'=>$data['linkdin_profile']);
+        'address'=>$data['address'],'skype_id'=>$data['skype_id'],'linkdin_profile'=>$data['linkdin_profile'],'cnic_front'=>$data['cnic_front'],'cnic_back'=> $data['cnic_back'],'last_degree'=> $data['last_degree']);
         
         $this->db->where('talentid',$id);
         $this->db->update('jobseeker_info',$value);
@@ -155,7 +155,7 @@ function retreive_one_education($id)
   function retrieve_info($id)
   {
     $sql  = 'SELECT pimage,first_name,last_name,father_name,date_of_birth,nationality,mobileno,city,country,address,
-          skype_id,linkdin_profile';
+          skype_id,linkdin_profile,cnic_front,cnic_back,last_degree';
     $sql .= ' FROM jobseeker_info WHERE talentid = ?';
     $sql_params = array($id);
     $query = $this->db->query($sql, $sql_params);

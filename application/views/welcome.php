@@ -5,11 +5,33 @@
 <div id='jobseeker_dashboard'>
 <form action="<?php echo base_url();?>welcome/validation" id="experience_info" method="post" enctype="multipart/form-data">
 
-   <p class="float-left"><label> Upload Profile Image :</label>
-  <input type="file" name="proimage" accept="image/*" onchange="loadimage(event,'profileimg')" />
+   
+ <?php 
+  if($form['pimage'])
+  {
+  ?>
+   <p class="float-left"><label>Profile Image :</label>
   <img src="<?php echo base_url().'uploads/'.$form['pimage'] ?>" name="profileimg" id="profileimg" width="100"alt="Profile Image" /></p>
-  <input type="hidden" name="image_value" id= "image_value" value="<?php echo set_value('image_value', $form['pimage']); ?>"/>
-  <span class="text-danger"><?php echo form_error('image_value'); ?></span>
+  <input type="hidden" name="image_value" id= "image_value" value="<?php echo set_value('pimage', $form['pimage']); ?>"/>
+  <?php
+}
+  else
+  {
+    ?>
+    <p id="ch" class="float-left"><label> Upload Profile Image :</label>
+  <input type="file" name="proimage" accept="image/*" onchange="loadimage(event,'profileimg')" />
+  <img name="profileimg" id="profileimg" width="100"alt="Profile Image" />
+  <span class="text-danger"><?php echo form_error('image_value'); ?></span></p>
+
+
+
+<?php
+  }
+  
+  ?>
+
+  
+  
 
 
 
@@ -42,13 +64,74 @@
     </select>
     <span class="text-danger"><?php echo form_error('gender'); ?></span>
   </p>
-  <p><input type="file" name="cnic_front" id="cnic_front" accept="image/gif, image/jpeg, image/png" value="<?php echo set_value('cnic_front'); ?>">
-  <span class="text-danger"><?php echo form_error('cnic_front'); ?></span></p>
-  <p><input type="file" name="cnic_back" id="cnic_back" accept="image/gif, image/jpeg, image/png" value="<?php echo set_value('cnic_back'); ?>">
-  <span class="text-danger"><?php echo form_error('cnic_back'); ?></span></p>
-  <p><input type="file" name="last_degree" id="last_degree" accept="image/gif, image/jpeg, image/png" value="<?php echo set_value('last_degree'); ?>">
-  <span class="text-danger"><?php echo form_error('last_degree'); ?></span></p>
+
+
+<?php 
+  if($form['cnic_front'])
+  {
+  ?>
+   <p class="float-left"><label>CNIC Front Image :</label>
+   <img src="<?php echo base_url().'uploads/'.$form['cnic_front'] ?>" name="fcnicimage" id="fcnicimage" width="100"alt="Front CNIC image" /></p>
+  <input type="hidden" name="cnic_front_value" id= "cnic_front_value" value="<?php echo set_value('cnic_front', $form['cnic_front']); ?>"/>
+  <?php
+}
+  else
+  {
+    ?>
+   <p>
+    <label> Upload CNIC Front Image :</label>
+  <input type="file" name="cnic_front" id="cnic_front" accept="image/gif, image/jpeg, image/png" onchange="loadimage(event,'fcnicimage')">
+  <img name="fcnicimage" id="fcnicimage" width="100"alt="Front CNIC image" /></p>
+  <p><span class="text-danger"><?php echo form_error('cnic_front'); ?></span></p>
+<?php
+  }
   
+  ?>
+
+<?php 
+  if($form['cnic_back'])
+  {
+  ?>
+   <p class="float-left"><label>CNIC Back Image :</label>
+   <img src="<?php echo base_url().'uploads/'.$form['cnic_back'] ?>" name="bcnicimage" id="bcnicimage" width="100"alt="Front CNIC image" /></p>
+  <input type="hidden" name="cnic_back_value" id= "cnic_back_value" value="<?php echo set_value('cnic_back', $form['cnic_back']); ?>"/>
+  <?php
+}
+  else
+  {
+    ?>
+   <p>
+    <label> Upload CNIC Back Image :</label>
+  <input type="file" name="cnic_back" id="cnic_back" accept="image/gif, image/jpeg, image/png" onchange="loadimage(event,'bcnicimage')">
+  <img name="bcnicimage" id="bcnicimage" width="100"alt="Back CNIC image" /></p>
+  <p><span class="text-danger"><?php echo form_error('cnic_back'); ?></span></p>
+<?php
+  }
+  
+  ?>
+
+
+ <?php 
+  if($form['last_degree'])
+  {
+  ?>
+   <p class="float-left"><label>CNIC Front Image :</label>
+   <img src="<?php echo base_url().'uploads/'.$form['last_degree'] ?>" name="lastdegreeimg" id="lastdegreeimg" width="100"alt="Front CNIC image" /></p>
+  <input type="hidden" name="last_degree_value" id= "last_degree_value" value="<?php echo set_value('last_degree', $form['last_degree']); ?>"/>
+  <?php
+}
+  else
+  {
+    ?>
+   <p>
+    <label> Upload CNIC Front Image :</label>
+  <input type="file" name="last_degree" id="last_degree" accept="image/gif, image/jpeg, image/png" onchange="loadimage(event,'lastdegreeimg')">
+  <img name="lastdegreeimg" id="lastdegreeimg" width="100"alt="Front CNIC image" /></p>
+  <p><span class="text-danger"><?php echo form_error('last_degree'); ?></span></p>
+<?php
+  }
+  
+  ?>
   <p><input type="submit" name="Submit" value="Submit" class="btn btn-info" /></p>
   <?php echo form_close() ?>
 </div>
@@ -60,6 +143,6 @@
     document.getElementById("image_value").value = event.target.files[0]['name'];
     // body...
   }
-  
+
 </script>
  

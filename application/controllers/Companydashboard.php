@@ -28,13 +28,23 @@ class Companydashboard extends CI_Controller {
 		}
 		$this->load->library('form_validation');
 		$this->load->library('encryptioncustom');
+		$this->load->helper(array('form', 'url'));
+		$this->load->helper('form');
 		$this->load->model('companydashboard_model');
 	}
 
 	function index()
 	{
 		$this->load->view('templates/header');
-		$this->load->view('companydashboard');
+		if($this->session->userdata('id'))
+		{
+			$id=$this->session->userdata('id');
+			$this->companydashboard_model->retrieve_info($id);
+		}
+		else 
+		{
+			$this->load->view('Companydashboard');
+		}
 		$this->load->view('templates/footer');
     }
     
@@ -64,13 +74,22 @@ class Companydashboard extends CI_Controller {
 		$this->form_validation->set_rules('ntn_no', 'NTN no', 'required|alpha_numeric');
 		$this->form_validation->set_rules('employee_no', 'No of employees in organization', 'required|alpha_numeric');
 
-		$picture=$this-> upload_file('logoimage');
+		if(isset($_FILES['logo_image']['name']))
+		{
+			$logo_img=$this-> upload('logo_image');
+			$logo_img_name=$logo_img['upload_data']['file_name'];
+		}
+		else
+		{
+			$logo_img_name=$this->input->post('image_value');
+		
+		}
 
 		if($this->form_validation->run())
 		{
 			$data = array(
 				'name_of_organization'  => $this->input->post('name_of_organization'),
-				'logoimage'=> $picture,
+				'logoimage'=> $logo_img_name,
 				'industry_type'  => $this->input->post('industry_type'),
 				'sector'  => $this->input->post('sector'),
 				'address'  => $this->input->post('address'),
@@ -89,18 +108,25 @@ class Companydashboard extends CI_Controller {
 				
 			);
 
+			echo "<pre>";
+			print_r($data);
 			
 			$id = $this->session->userdata('id');
 			$result = $this->companydashboard_model->insert_info($data,$id); 
+
+			print_r($result);
+			exit;
 			
 			if($result == '')
 			{		
-				
-				$this->loadIndex();
+				echo "completely insert";
+
 				
 			}
 			else
 			{
+				echo "uncompletely insert 1";
+				exit();
 				$this->output
 				->set_content_type('application/json')
 				->set_output(json_encode(['message'=>$result, 'status'=>'faliure']));
@@ -108,6 +134,8 @@ class Companydashboard extends CI_Controller {
 		}
 		else
 		{
+			echo "completely insert";
+			exit;
 			$this->index();
 		}
 	}
@@ -142,6 +170,17 @@ class Companydashboard extends CI_Controller {
             	exit;
             }
         }
+
+           public function upload($f)
+	{
+		if(isset($_FILES[$f]["name"])){
+			if(($_FILES[$f]["name"])!== ""){
+				$picture=$this-> upload_file($f);
+				return $picture;
+			}
+		}
+
+	}
 	
 
 	function logout()
