@@ -40,16 +40,16 @@ class Welcome extends CI_Controller {
 	function index()
 	{
 		$this->load->view('templates/header');
-		// if($this->session->userdata('id'))
-		// {
-		// 	$id=$this->session->userdata('id');
-		// 	$this->welcome_model->retrieve_info($id);
-		// }
-		// else 
-		// {
-			$this->load->view('skill');
-		// }
-		// $this->load->view('templates/footer');
+		if($this->session->userdata('id'))
+		{
+			$id=$this->session->userdata('id');
+			$this->welcome_model->retrieve_info($id);
+		}
+		else 
+		{
+			$this->load->view('welcome');
+		}
+		$this->load->view('templates/footer');
 	}
 
 	function experience()
@@ -398,7 +398,7 @@ class Welcome extends CI_Controller {
 	{
 		
 		$id = $this->session->userdata('id');
-		$result = $this->welcome_model->getEdu($id);
+		$result = $this->welcome_model->getExp($id);
 		if($result == 0){
 			$this->output
 				->set_content_type('application/json')

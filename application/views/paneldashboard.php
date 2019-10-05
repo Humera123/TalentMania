@@ -1,16 +1,6 @@
 <br /><br /><br /><h1 align="center">Welcome User</h1>
 <p align="center"><a href="<?php echo base_url()?>welcome/logout">Logout</a></p>
 
-<?php 
-   if($this->session->flashdata('true'))
-   {
- ?>
-   <div class="alert alert-success"> 
-     <?php  echo $this->session->flashdata('true'); ?>
-<?php    
-}
-?>
-<br>
 
 <div id='panel_dashboard'>
 <form action="<?php echo base_url();?>paneldashboard/validation" id="panel_info" method="post" enctype="multipart/form-data">

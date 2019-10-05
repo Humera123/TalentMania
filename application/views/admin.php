@@ -5,15 +5,24 @@
 <a href="<?php echo base_url()?>admindashboard/jobSeeker_data">Showing JobSeeker Data</a> 
 
 <?php
-if($this->uri->segment(2)=="company_data")
+if($this->uri->segment(2)=="company_data" || $this->uri->segment(2)=="company_data_filter")
 {
 	?>
 	<h3>Company Data :</h3><br />  
+              <form class="form-inline" action="<?php echo base_url() . 'admindashboard/company_data_filter'; ?>" method="post">
+                <select class="form-control" name="field">
+                  <option selected="selected" disabled="disabled" value="">Filter By</option>
+                  <option value="name_of_organization">name_of_organization</option>
+                </select>
+                <input class="form-control" type="text" name="search" value="" placeholder="Search...">
+                <input class="btn btn-default" type="submit" name="filter" value="Go">
+              </form>
 
               <div class="table-responsive">  
-              <table class="table table-bordered">  
+              <table class="table table-striped">  
+               <thead>
                 <tr>  
-                     <th>company_no</th>  
+                     <th>Company_no</th>  
                      <th>logoimage</th>  
                      <th>name_of_organizatio</th>  
                      <th>industry_type</th> 
@@ -30,17 +39,18 @@ if($this->uri->segment(2)=="company_data")
                      <th>ntn_no</th>  
                      <th>employee_no</th>  
 
-                </tr>  
+                </tr> 
+                </thead> 
            <?php  
            if($data)  
            {  
              foreach ($data as $row) 
                 {  
-           ?>  
+           ?>  <tbody>
                 <tr>  
                      <td><?php echo "$row->company_no" ?></td> 
                      <td><img src="<?php echo base_url().'uploads/'.$row->logoimage?>" width="100px"/></td> 
-                     <td><?php echo "$row->name_of_organization" ?></td>
+                     <td><a href="<?php echo base_url() . "admindashboard/view_company_job/" . $row->company_no; ?>"><?php echo "$row->name_of_organization" ?></a></td>
                      <td><?php echo "$row->industry_type" ?></td>
                      <td><?php echo "$row->sector" ?></td>
                      <td><?php echo "$row->address" ?></td>
@@ -54,7 +64,8 @@ if($this->uri->segment(2)=="company_data")
                      <td><?php echo "$row->focal_name"?></td>
                      <td><?php echo "$row->ntn_no"?></td>
                      <td><?php echo "$row->employee_no"?></td>
-                </tr>  
+                </tr> 
+                </tbody> 
            <?php       
                 }  
            }  
@@ -71,13 +82,22 @@ if($this->uri->segment(2)=="company_data")
       </div>
       <?php
 }
-else if ($this->uri->segment(2)=="panel_data")
+else if ($this->uri->segment(2)=="panel_data" || $this->uri->segment(2)=="panel_data_filter")
 {
 	?>
 	<h3>Panel Data :</h3><br />  
+            <form class="form-inline" action="<?php echo base_url() . 'admindashboard/panel_data_filter'; ?>" method="post">
+                <select class="form-control" name="field">
+                  <option selected="selected" disabled="disabled" value="">Filter By</option>
+                  <option value="first_name"> first_name </option>
+                  <option value="last_name"> last_name </option>
+                </select>
+                <input class="form-control" type="text" name="search" value="" placeholder="Search...">
+                <input class="btn btn-default" type="submit" name="filter" value="Go">
+              </form>
 
               <div class="table-responsive">  
-              <table class="table table-bordered">  
+              <table class="table  table-striped">  
                 <tr>  
                      <th>Panelid</th>  
                      <th>Profileimage</th>
@@ -123,13 +143,25 @@ else if ($this->uri->segment(2)=="panel_data")
       </div>
       <?php
 }
-else if($this->uri->segment(2)=="jobSeeker_data")
+else if($this->uri->segment(2)=="jobSeeker_data"|| $this->uri->segment(2)=="fiter_jobseeker_data")
 {
 ?>
 	<h3>Jobseeker Data :</h3><br />  
+             <form class="form-inline" action="<?php echo base_url() . 'admindashboard/fiter_jobseeker_data'; ?>" method="post">
+                <select class="form-control" name="field">
+                  <option selected="selected" disabled="disabled" value="">Filter By</option>
+                  <option value="first_name"> first_name</option>
+                  <option value="last_name"> last_name </option>
+                  <option value="approval">Approval </option>
+                  <option value="hiring"> Hiring </option>
+                  <option value="city"> City </option>
+                </select>
+                <input class="form-control" type="text" name="search" value="" placeholder="Search...">
+                <input class="btn btn-default" type="submit" name="filter" value="Go">
+              </form>
 
               <div class="table-responsive">  
-              <table class="table table-bordered">  
+              <table class="table table-striped">  
                 <tr>  
                      <th>CNIC</th>  
                      <th>Profile Image</th>  
@@ -159,7 +191,6 @@ else if($this->uri->segment(2)=="jobSeeker_data")
                      <td><?php echo "$row->father_name" ?></td>
                      <td><?php echo "$row->date_of_birth" ?></td>
                      <td><?php echo "$row->nationality" ?></td>
-                     <td><?php echo "$row->mobileno"?></td>
                      <td><?php echo "$row->mobileno"?></td>
                      <td><?php echo "$row->address"?></td>
                      <td><?php echo "$row->city"?></td>
