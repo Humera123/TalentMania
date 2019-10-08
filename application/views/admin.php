@@ -91,6 +91,7 @@ else if ($this->uri->segment(2)=="panel_data" || $this->uri->segment(2)=="panel_
                   <option selected="selected" disabled="disabled" value="">Filter By</option>
                   <option value="first_name"> first_name </option>
                   <option value="last_name"> last_name </option>
+                  <option value="pskill_name">Skill Name </option>
                 </select>
                 <input class="form-control" type="text" name="search" value="" placeholder="Search...">
                 <input class="btn btn-default" type="submit" name="filter" value="Go">
@@ -107,11 +108,15 @@ else if ($this->uri->segment(2)=="panel_data" || $this->uri->segment(2)=="panel_
                      <th>City</th>
                      <th>Country</th>
                      <th>Skype_id</th>  
-                     <th>Linkedin_profile</th>               
+                     <th>Linkedin_profile</th> 
+                     <th>Panel Skills </th>              
+                     <th>Panel Experience </th> 
+                     <th>Panel Education </th> 
                 </tr>  
            <?php  
            if($data)  
            {  
+            
              foreach ($data as $row) 
                 {  
            ?>  
@@ -125,7 +130,10 @@ else if ($this->uri->segment(2)=="panel_data" || $this->uri->segment(2)=="panel_
                      <td><?php echo "$row->country"?></td>
                      <td><?php echo "$row->skype_id"?></td>
                      <td><?php echo "$row->linkdin_profile"?></td>
-                     
+                     <td><?php echo "$row->skills"?></td>
+                     <td><?php echo "$row->exp"?></td>
+                     <td><?php echo "$row->edu"?></td>
+
                 </tr>  
            <?php       
                 }  
@@ -155,6 +163,7 @@ else if($this->uri->segment(2)=="jobSeeker_data"|| $this->uri->segment(2)=="fite
                   <option value="approval">Approval </option>
                   <option value="hiring"> Hiring </option>
                   <option value="city"> City </option>
+                  <option value="skill_name"> Skill Name</option>
                 </select>
                 <input class="form-control" type="text" name="search" value="" placeholder="Search...">
                 <input class="btn btn-default" type="submit" name="filter" value="Go">
@@ -176,6 +185,11 @@ else if($this->uri->segment(2)=="jobSeeker_data"|| $this->uri->segment(2)=="fite
                      <th>Country</th>  
                      <th>Skype_id</th>  
                      <th>Linkedin_Profile</th>  
+                     <th>skills</th>  
+                     <th>Experience</th>
+                     <th>Education</th>
+
+                     
                 </tr>  
            <?php  
            if($data)  
@@ -197,6 +211,9 @@ else if($this->uri->segment(2)=="jobSeeker_data"|| $this->uri->segment(2)=="fite
                      <td><?php echo "$row->country"?></td>
                      <td><?php echo "$row->skype_id"?></td>
                      <td><?php echo "$row->linkdin_profile"?></td>
+                     <td><?php echo "$row->skills"?></td>
+                     <td><?php echo "$row->exp"?></td>
+                     <td><?php echo "$row->edu"?></td>
            <?php       
                 }  
            }  
