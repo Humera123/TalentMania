@@ -1,7 +1,7 @@
 <?php
 $output ="";
-if(count($getSkills) > 0){
-    foreach($getSkills as $row){
+if(count($data) > 0){
+    foreach($data as $row){
         $color = '';
         $rating = $row->rating;
         $output .= '

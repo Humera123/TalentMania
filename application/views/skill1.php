@@ -17,7 +17,7 @@ if(count($data) > 0){
             {
             $color = 'color:#ccc;';
             }
-            $output .= '<li title="'.$count.'" id="'.$row->skillid. '-'.$count.'" data-skill="'.$row->skillid.'" data-index="'.$count.'"  data-rating="'.$rating.'" class="rating" style="cursor:pointer; '.$color.' font-size:24px;">&#9733;</li>';
+            $output .= '<li title="'.$count.'"  data-index="'.$count.'"  data-rating="'.$rating.'" class="rating" style="cursor:pointer; '.$color.' font-size:24px;">&#9733;</li>';
         }
    $output .= '</ul>';
     }
@@ -35,43 +35,32 @@ $(document).ready(function()
   $(document).on('mouseenter', '.rating', function()
   {
   var index = $(this).data('index');
-  var skillid = $(this).data('skill');
-  remove_background(skillid);
+  var skillid = $(this).data('panelid');
   for(var count = 1; count <= index; count++)
   {
    $('#'+skillid+'-'+count).css('color', '#ffcc00');
   }
  });
 
-  function remove_background(skillid)
- {
-  for(var count = 1; count <= 5; count++)
-  {
-   $('#'+skillid+'-'+count).css('color', '#ccc');
-  }
- }
-
  $(document).on('click', '.rating', function(){
   var index = $(this).data('index');
-  var skillid = $(this).data('skill');
+  var skillid = $(this).data('skillid');
   $.ajax({
    url:"<?php echo base_url(); ?>skillendorsed/insert",
    method:"POST",
    data:{index:index, skillid:skillid},
    success:function(data)
    {
-    
+    load_data();
     alert("You have rate "+index +" out of 5");
-    location.reload(true);
    }
   })
  });
 
  $(document).on('mouseleave', '.rating', function(){
   var index = $(this).data('index');
-  var skillid = $(this).data('skill');
+  var skillid = $(this).data('panelid');
   var rating = $(this).data('rating');
-  remove_background(skillid);
   for(var count = 1; count <= rating; count++)
   {
    $('#'+skillid+'-'+count).css('color', '#ffcc00');
