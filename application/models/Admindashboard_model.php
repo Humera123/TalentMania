@@ -82,6 +82,30 @@ class Admindashboard_model extends CI_Model
       $query=$this->db->query($sql);
       return $query->result();
   }
+
+  function assign_panelist()
+  {
+     
+      $skills="SELECT panel_skill.talent_id,skill_name FROM jobseeker_skill join panel_skill where jobseeker_skill.skill_name = panel_skill.pskill_name AND jobseeker_skill.panelid=0 ";
+      $skill_query=$this->db->query($skills);
+      $skill_query_result=$skill_query->result();
+      
+      for ($i=0; $i < $skill_query->num_rows(); $i++)
+      {
+
+        $talent_id= $skill_query_result[$i]->talent_id;
+        $skill_name= $skill_query_result[$i]->skill_name;
+
+        $panel_skill= "SELECT count(panelid) as totalno FROM jobseeker_skill where panelid=$talent_id";
+        $panel_skill=$this->db->query($panel_skill);
+        $panel_skill=$panel_skill->row();
+
+        $sql = "UPDATE jobseeker_skill as js, panel_skill as ps
+               SET js.panelid = '".$talent_id."'
+              where js.skill_name='".$skill_name."' AND 3>".$panel_skill->totalno."";
+      $query=$this->db->query($sql);
+      }
+  }
   
 }
 

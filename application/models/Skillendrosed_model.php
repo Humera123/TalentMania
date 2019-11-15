@@ -6,8 +6,9 @@ function getSkill($id)
 {
   $query='';
   $sql  = 'SELECT *';
-    $sql .= ' FROM jobseeker_skill where panelid=1';
-  $query=$this->db->query($sql); 
+    $sql .= ' FROM jobseeker_skill where panelid=?';
+    $sql_params = array($id);
+    $query = $this->db->query($sql, $sql_params);
   return      $query->result();
     
 }

@@ -320,8 +320,7 @@ class Paneldashboard extends CI_Controller {
 				->set_output(json_encode(['message'=>$result, 'status'=>'faliure']));
 			}
 	}
-    
-
+   
 	function logout()
 	{
 		$data = $this->session->all_userdata();

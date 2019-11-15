@@ -22,10 +22,10 @@ class Admindashboard extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		if(!$this->session->userdata('id'))
-		{
-			redirect('index');
-		}
+		// if(!$this->session->userdata('id'))
+		// {
+		// 	redirect('index');
+	 //  }
 		$this->load->library('encryptioncustom');
 		$this->load->model('admindashboard_model');
 	}
@@ -111,6 +111,12 @@ class Admindashboard extends CI_Controller {
     	$this->load->view('templates/footer');
 
    	}
+
+    function assign()
+    {
+      $result['data']=$this->admindashboard_model->assign_panelist(); 
+      $this->load->view('admin',$this->session->set_flashdata('true', 'Successfully Panelist Alot'));     
+    }
 
 	function logout()
 	{

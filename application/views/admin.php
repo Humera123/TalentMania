@@ -1,8 +1,19 @@
-
+<?php 
+   if($this->session->flashdata('true'))
+   {
+ ?>
+   <div class="alert alert-success"> 
+     <?php  echo $this->session->flashdata('true'); ?>
+<?php    
+}
+?>
+<br>
 <p align="center"><a href="<?php echo base_url()?>welcome/logout">Logout</a></p>
 <a href="<?php echo base_url()?>admindashboard/company_data">Showing Company Data</a> 
 <a href="<?php echo base_url()?>admindashboard/panel_data">Showing Panel Data </a> 
 <a href="<?php echo base_url()?>admindashboard/jobSeeker_data">Showing JobSeeker Data</a> 
+<button type="submit" onclick="window.location='<?php echo base_url()?>admindashboard/assign'">Assign Panalist</button>
+
 
 <?php
 if($this->uri->segment(2)=="company_data" || $this->uri->segment(2)=="company_data_filter")
